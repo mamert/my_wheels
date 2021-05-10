@@ -67,8 +67,8 @@
  * Then you can verify voltage on debug output value 6 (to get calibrated voltage multiplied by 100).
 */
 #define BAT_FILT_COEF           655       // battery voltage filter coefficient in fixed-point. coef_fixedPoint = coef_floatingPoint * 2^16. In this case 655 = 0.01 * 2^16
-#define BAT_CALIB_REAL_VOLTAGE  3900      // input voltage measured by multimeter (multiplied by 100). In this case 43.00 V * 100 = 4300
-#define BAT_CALIB_ADC           1458      // adc-value measured by mainboard (value nr 5 on UART debug output)
+#define BAT_CALIB_REAL_VOLTAGE  3740      // input voltage measured by multimeter (multiplied by 100). In this case 43.00 V * 100 = 4300
+#define BAT_CALIB_ADC           1457      // adc-value measured by mainboard (value nr 5 on UART debug output)
 #define BAT_CELLS               10        // battery number of cells. Normal Hoverboard battery: 10s
 #define BAT_LVL2_ENABLE         0         // to beep or not to beep, 1 or 0
 #define BAT_LVL1_ENABLE         1         // to beep or not to beep, 1 or 0
@@ -77,7 +77,7 @@
 #define BAT_LVL4                (380 * BAT_CELLS * BAT_CALIB_ADC) / BAT_CALIB_REAL_VOLTAGE    // Yellow:       no beep
 #define BAT_LVL3                (370 * BAT_CELLS * BAT_CALIB_ADC) / BAT_CALIB_REAL_VOLTAGE    // Yellow blink: no beep 
 #define BAT_LVL2                (360 * BAT_CELLS * BAT_CALIB_ADC) / BAT_CALIB_REAL_VOLTAGE    // Red:          gently beep at this voltage level. [V*100/cell]. In this case 3.60 V/cell
-#define BAT_LVL1                (350 * BAT_CELLS * BAT_CALIB_ADC) / BAT_CALIB_REAL_VOLTAGE    // Red blink:    fast beep. Your battery is almost empty. Charge now! [V*100/cell]. In this case 3.50 V/cell
+#define BAT_LVL1                (340 * BAT_CELLS * BAT_CALIB_ADC) / BAT_CALIB_REAL_VOLTAGE    // Red blink:    fast beep. Your battery is almost empty. Charge now! [V*100/cell]. In this case 3.50 V/cell
 #define BAT_DEAD                (337 * BAT_CELLS * BAT_CALIB_ADC) / BAT_CALIB_REAL_VOLTAGE    // All leds off: undervoltage poweroff. (while not driving) [V*100/cell]. In this case 3.37 V/cell
 // ######################## END OF BATTERY ###############################
 
@@ -141,13 +141,13 @@
 
 // Control selections
 #define CTRL_TYP_SEL    FOC_CTRL        // [-] Control type selection: COM_CTRL, SIN_CTRL, FOC_CTRL (default)
-#define CTRL_MOD_REQ    TRQ_MODE        // [-] Control mode request: OPEN_MODE, VLT_MODE (default), SPD_MODE, TRQ_MODE. Note: SPD_MODE and TRQ_MODE are only available for CTRL_FOC!
+#define CTRL_MOD_REQ    SPD_MODE        // [-] Control mode request: OPEN_MODE, VLT_MODE (default), SPD_MODE, TRQ_MODE. Note: SPD_MODE and TRQ_MODE are only available for CTRL_FOC!
 #define DIAG_ENA        1               // [-] Motor Diagnostics enable flag: 0 = Disabled, 1 = Enabled (default)
 
 // Limitation settings
 #define I_MOT_MAX       15              // [A] Maximum single motor current limit
 #define I_DC_MAX        17              // [A] Maximum stage2 DC Link current limit for Commutation and Sinusoidal types (This is the final current protection. Above this value, current chopping is applied. To avoid this make sure that I_DC_MAX = I_MOT_MAX + 2A)
-#define N_MOT_MAX       1000            // [rpm] Maximum motor speed limit
+#define N_MOT_MAX       60            // [rpm] Maximum motor speed limit
 
 // Field Weakening / Phase Advance
 #define FIELD_WEAK_ENA  0               // [-] Field Weakening / Phase Advance enable flag: 0 = Disabled (default), 1 = Enabled
@@ -183,7 +183,7 @@
 #define DEFAULT_RATE                480   // 30.0f [-] lower value == slower rate [0, 32767] = [0.0, 2047.9375]. Do NOT make rate negative (>32767)
 #define DEFAULT_FILTER              6553  // Default for FILTER 0.1f [-] lower value == softer filter [0, 65535] = [0.0 - 1.0].
 #define DEFAULT_SPEED_COEFFICIENT   16384 // Default for SPEED_COEFFICIENT 1.0f [-] higher value == stronger. [0, 65535] = [-2.0 - 2.0]. In this case 16384 = 1.0 * 2^14
-#define DEFAULT_STEER_COEFFICIENT   8192  // Defualt for STEER_COEFFICIENT 0.5f [-] higher value == stronger. [0, 65535] = [-2.0 - 2.0]. In this case  8192 = 0.5 * 2^14. If you do not want any steering, set it to 0.
+#define DEFAULT_STEER_COEFFICIENT   2048  // Defualt for STEER_COEFFICIENT 0.5f [-] higher value == stronger. [0, 65535] = [-2.0 - 2.0]. In this case  8192 = 0.5 * 2^14. If you do not want any steering, set it to 0.
 // ######################### END OF DEFAULT SETTINGS ##########################
 
 
@@ -279,8 +279,8 @@
   #define CONTROL_ADC           0         // use ADC as input. Number indicates priority for dual-input. Disable CONTROL_SERIAL_USART2, FEEDBACK_SERIAL_USART2, DEBUG_SERIAL_USART2!
 
   // #define DUAL_INPUTS                     //  ADC*(Primary) + UART(Auxiliary). Uncomment this to use Dual-inputs
-  #define PRI_INPUT1            3, 0, 1998, 4030, 5      // TYPE, MIN, MID, MAX, DEADBAND. See INPUT FORMAT section
-  #define PRI_INPUT2            3, 0, 1998, 4030, 5      // TYPE, MIN, MID, MAX, DEADBAND. See INPUT FORMAT section
+  #define PRI_INPUT1            2, 3, 2040, 4090, 20      // TYPE, MIN, MID, MAX, DEADBAND. See INPUT FORMAT section
+  #define PRI_INPUT2            2, 6, 2080, 4090, 20      // TYPE, MIN, MID, MAX, DEADBAND. See INPUT FORMAT section
   #ifdef DUAL_INPUTS
     #define FLASH_WRITE_KEY     0x1101    // Flash memory writing key. Change this key to ignore the input calibrations from the flash memory and use the ones in config.h
     // #define SIDEBOARD_SERIAL_USART3 1
