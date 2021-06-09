@@ -149,7 +149,7 @@
                                         // I_MOT_MAX: 15 default. "10" = 380W
 #define I_DC_MAX  (I_MOT_MAX + 2)       // [A] Maximum stage2 DC Link current limit for Commutation and Sinusoidal types (This is the final current protection. Above this value, current chopping is applied. To avoid this make sure that I_DC_MAX = I_MOT_MAX + 2A)
                                         // I_DC_MAX: default 17. Follow advice: I_DC_MAX = I_MOT_MAX + 2A
-// #define N_MOT_MAX       60            // [rpm] Maximum motor speed limit, 1000 is default, 60 is for blatforma
+#define N_MOT_MAX       60              // [rpm] Maximum motor speed limit, 1000 is default, 60 is for blatforma
 
 // Field Weakening / Phase Advance
 #define FIELD_WEAK_ENA  0               // [-] Field Weakening / Phase Advance enable flag: 0 = Disabled (default), 1 = Enabled
@@ -280,7 +280,7 @@
 */
   #define CONTROL_ADC           0         // use ADC as input. Number indicates priority for dual-input. Disable CONTROL_SERIAL_USART2, FEEDBACK_SERIAL_USART2, DEBUG_SERIAL_USART2!
 
-  // #define DUAL_INPUTS                     //  ADC*(Primary) + UART(Auxiliary). Uncomment this to use Dual-inputs
+  #define DUAL_INPUTS                     //  ADC*(Primary) + UART(Auxiliary). Uncomment this to use Dual-inputs
   #define PRI_INPUT1            2, 3, 1985, 4016, 20      // TYPE, MIN, MID, MAX, DEADBAND. See INPUT FORMAT section
   #define PRI_INPUT2            2, 3, 2025, 4019, 20      // TYPE, MIN, MID, MAX, DEADBAND. See INPUT FORMAT section
   #ifdef DUAL_INPUTS
